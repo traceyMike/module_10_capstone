@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<h1>Checkout</h1>
+
+
+
+<div class="card">
+
+  <div class="card-body">
+
+    <h5 class="card-title">Order Summary</h5>
+
+    <p>Total Items: {{ cart|length }}</p>
+
+    <p>Total Price: ${{ "%.2f"|format(total) }}</p>
+
+    
+
+    <form action="{{ url_for('complete_order') }}" method="post">
+
+      <div class="mb-3">
+
+        <label for="name" class="form-label">Your Name</label>
+
+        <input type="text" class="form-control" id="name" name="name" required>
+
+      </div>
+
+      <div class="mb-3">
+
+        <label for="email" class="form-label">Your Email</label>
+
+        <input type="email" class="form-control" id="email" name="email" required>
+
+      </div>
+
+      <button type="submit" class="btn btn-success">Place Order</button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<a href="{{ url_for('home') }}" class="btn btn-primary mt-3">Back to Shopping</a>
+
+{% endblock %}
+
