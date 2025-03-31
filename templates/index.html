@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- HOME PAGE
+displays all products with category filtering options -->
+
+<!-- Hero Section -->
+<div class="text-center mb-5">
+<h1 class="display-4">Welcome to Sock Wizard!</h1>
+<p class="lead">Design your own custom socks with your favorite memes, inside jokes, or school pride!</p>
+</div>
+
+<!-- Category Filter Card -->
+<div class="row mb-4">
+<div class="col-md-12">
+<div class="card">
+<div class="card-header bg-primary text-white">
+<i class="bi bi-filter-circle"></i> Filter by Category
+</div>
+<div class="card-body">
+<div class="d-flex flex-wrap gap-2">
+    <!-- 'All Products' Button - activate when no category selected -->
+
+    <a href="{{ url_for('home') }}" class="btn {% if not current_category %}btn-primary{% else %}btn-outline-primary{% endif %}">
+All Products
+</a>
+
+<!-- Dynamic Category Buttons -->
+{% for category in categories %}
+<a href="{{ url_for('home', category=category) }}"
+class="btn {% if current_category == category %}btn-primary{% else %}btn-outline-primary{% endif %}">
+{{ category|capitalize }}
+</a>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Product Grid -->
+<div class="row">
+{% for product in products %}
+<div class="col-md-4 mb-4">
+<!-- Product Card - h-100 makes cards equal height in row -->
+<div class="card h-100">
+<div class="card-body">
+<!-- Category Badge(top right) -->
+<span class="badge bg-secondary float-end">{{ product.category|capitalize }}</span>
+
+<!-- Product Details -->
+<h5 class="card-title">{{ product.name }}</h5>
+<p class="card-text">{{ product.description }}</p>
+<p class="card-text text-primary fw-bold">${{ product.base_price }}</p>
+</div>
+
+<!-- Card Footer with View Details Button -->
+<div class="card-footer bg-white border-top-0">
+<a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-primary">
+<i class="bi bi-eye"></i> View Details
+</a>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

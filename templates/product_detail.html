@@ -1,0 +1,70 @@
+<!-- extends the base.html page so the navbar and footer are displayed -->
+<!-- PRODUCT DETAIL PAGE TEMPLATE
+ Displays detailed info about a single product and handles adding to cart
+
+ Inherits from base.html to maintain consistent header/navigation and footer-->
+{% extends 'base.html' %}
+
+<!-- product detail content is displayed in between navbar and footer -->
+{% block content %}
+
+<!-- MAIN CONTENT SECTION
+Uses Bootstrap grid system to create responsive layout -->
+
+<div class="row">
+<!-- Left Column
+col-md-6: takes 6 columns on medium+ screensm stacks on mobile -->
+<div class="col-md-6">
+    <!-- flask fills in variables from the products collection in app.py -->
+
+<!-- PRODUCT HEADER SECTION -->
+<h1>{{ product.name }}</h1> <!-- product name from Flask variable -->
+<p class="lead">{{ product.description }}</p> <!-- Lead paragraph for description -->
+
+<!-- PRICE DISPLAY -->
+<p class="text-primary fw-bold fs-4">${{ product.base_price }}</p> <!-- blue, bold, large text -->
+
+<!-- CATEGORY BADGE -->
+<!-- gret badge with bottom margin -->
+<span class="badge bg-secondary mb-3">
+    {{ product.category|capitalize }}</span> <!-- capitalized category name -->
+
+<!-- ADD TO CART FORM
+ Posts data to the add_to_cart route when submitted -->
+    <!-- form for adding product to the cart -->
+<form action="{{ url_for('add_to_cart') }}" method="post">
+
+<!-- HIDDEN PRODUCT ID FIELD
+passes the product ID without displaying it to the user -->
+<input type="hidden" name="product_id" value="{{ product.id }}">
+
+<!-- QUANTITY SELECTOR -->
+<div class="mb-3"> <!-- margin bottom -->
+<label for="quantity" class="form-label">Quantity:</label>
+        <input type="number" class="form-control"
+               id="quantity" name="quantity"
+               value="1" min="1" max="10">
+</div>
+
+<!-- CUSTOM TEXT INPUT -->
+<div class="mb-3">
+<label for="custom_text" class="form-label">
+    Custom Text (optional):
+</label>
+<input type="text" class="form-control"
+       id="custom_text" name="custom_text"
+       placeholder="Enter text for your custom socks">
+</div>
+
+<!-- SUBMIT BUTTON - adds the product to the cart -->
+<button type="submit" class="btn btn-success">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+</form>
+<!-- they are redirected back to homepage after adding product to the cart -->
+<a href="{{ url_for('home') }}" class="btn btn-outline-secondary mt-3">
+<i class="bi bi-arrow-left"></i> Back to Products
+</a>
+</div>
+</div>
+{% endblock %}

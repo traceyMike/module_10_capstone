@@ -1,0 +1,70 @@
+<!-- cart page extends the base page so that the navbar and footer are applied -->
+<!-- SHOPPING CART TEMPLATE
+Displays all items in the user's shopping cart with order summary
+Inherits from base.html for consistent layout and navigation -->
+
+{% extends 'base.html' %} <!-- Inherits structure from base template -->
+
+{% block content %} <!-- Content block that inserts into base.html -->
+
+<!-- Page Heading -->
+<h1>Your Shopping Cart</h1>
+<!-- if statement is testing if a cart exists in this session -->
+
+<!-- CART CONTENTS SECTION
+ Checks if cart exists and has items -->
+{% if cart %} <!-- If cart exists and is not empty -->
+
+<!-- responsive table container -->
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Custom Text</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <!-- for loop through the items that are in the cart for the current session and display each item -->
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.custom_text or 'N/A' }}</td>
+                <td>${{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ "%.2f"|format(item.total) }}</td> <!-- formatting the total cost of the cart as currency -->
+            </tr>
+            {% endfor %} <!-- end for loop -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <!-- display grand total for cart -->
+                <td colspan="4" class="text-end fw-bold">Grand Total:</td>
+                <td class="fw-bold">${{ "%.2f"|format(total) }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- show buttons to allow the user to continue shopping or go to check out -->
+<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Continue Shopping
+    </a>
+    <a href="#" class="btn btn-success">
+        <i class="bi bi-credit-card"></i> Proceed to Checkout
+    </a>
+</div>
+<!-- else display message that cart is empty if no cart has been created for the session -->
+{% else %} <!-- else clause for if else at beginning -->
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> Your cart is empty.
+</div>
+
+<a href="{{ url_for('home') }}" class="btn btn-primary">
+    <i class="bi bi-shop"></i> Go Shopping
+</a>
+{% endif %}
+{% endblock %}
